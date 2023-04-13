@@ -38,7 +38,9 @@ return {
       vim.keymap.set('n', '<leader>sl', builtin.git_files, { desc = '[S]earch Git Fi[l]es' })
       vim.keymap.set('n', '<leader>sh', builtin.help_tags, { desc = '[S]earch [H]elp' })
       vim.keymap.set('n', '<leader>sw', builtin.grep_string, { desc = '[S]earch current [W]ord' })
-      vim.keymap.set('n', '<leader>sg', builtin.live_grep, { desc = '[S]earch by [G]rep' })
+      -- vim.keymap.set('n', '<leader>sg', builtin.live_grep, { desc = '[S]earch by [G]rep' })
+      vim.keymap.set('n', '<leader>sg', function() require('telescope.builtin').live_grep { glob_pattern = "!.git/" } end,
+        { desc = '[S]earch by [G]rep' })
       vim.keymap.set('n', '<leader>sd', builtin.diagnostics, { desc = '[S]earch [D]iagnostics' })
       vim.keymap.set('n', '<C-p>', function()
         local cmd = { "rg", "--files", "--color", "never", "--hidden", "-g", "!.git/" }

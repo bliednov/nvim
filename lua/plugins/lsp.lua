@@ -41,6 +41,7 @@ return {
       lsp.ensure_installed({
         'lua_ls',
         'rust_analyzer',
+        'pylsp',
       })
 
       lsp.configure('lua_ls', {
@@ -85,6 +86,7 @@ return {
         servers = {
           ['lua_ls'] = { 'lua' },
           ['rust_analyzer'] = { 'rust' },
+          ['pylsp'] = { 'python' },
         }
       })
 

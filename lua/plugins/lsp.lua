@@ -42,6 +42,11 @@ return {
         'lua_ls',
         'rust_analyzer',
         'pylsp',
+        'html',
+        'tsserver',
+        'jqls',
+        'astro',
+        'tailwindcss',
       })
 
       lsp.configure('lua_ls', {

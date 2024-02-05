@@ -4,6 +4,8 @@ return {
     dependencies = {
       "nvim-treesitter/nvim-treesitter",
     },
-    opts = {},
+    opts = {
+      max_lines = 1,
+    },
   }
 }

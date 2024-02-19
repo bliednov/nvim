@@ -40,7 +40,6 @@ return {
 
       lsp.ensure_installed({
         'lua_ls',
-        'rust_analyzer',
         'pylsp',
         'html',
         'tsserver',
@@ -56,6 +55,10 @@ return {
             telemetry = { enable = false },
           }
         }
+      })
+
+      lsp.configure('rust_analyzer', {
+        cmd = { 'rust-analyzer' },
       })
 
       local cmp = require('cmp')

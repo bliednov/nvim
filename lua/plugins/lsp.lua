@@ -4,7 +4,7 @@ return {
   {
     -- LSP Configuration & Plugins
     'VonHeikemen/lsp-zero.nvim',
-    branch = 'v2.x',
+    branch = 'v3.x',
     dependencies = {
       -- LSP Support
       { 'neovim/nvim-lspconfig' }, -- Required
@@ -26,6 +26,8 @@ return {
       { 'hrsh7th/nvim-cmp' },     -- Required
       { 'hrsh7th/cmp-nvim-lsp' }, -- Required
       { 'L3MON4D3/LuaSnip' },     -- Required
+      { 'hrsh7th/cmp-buffer' },
+      { 'hrsh7th/cmp-path' },
       -- Useful status updates for LSP
       -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
       { 'j-hui/fidget.nvim',                tag = 'legacy', opts = {} },
@@ -38,57 +40,73 @@ return {
 
       lsp.preset("recommended")
 
-      lsp.ensure_installed({
-        'lua_ls',
-        'pylsp',
-        'html',
-        'tsserver',
-        'jqls',
-        'astro',
-        'tailwindcss',
-      })
-
-      lsp.configure('lua_ls', {
-        settings = {
-          Lua = {
-            workspace = { checkThirdParty = false },
-            telemetry = { enable = false },
-          }
+      require('mason').setup({})
+      require('mason-lspconfig').setup({
+        ensure_installed = {
+          'lua_ls',
+          'pylsp',
+          'html',
+          'tsserver',
+          'jqls',
+          'astro',
+          'tailwindcss',
+          'rust_analyzer',
+        },
+        handlers = {
+          lsp.default_setup,
+          lua_ls = function()
+            local lua_opts = lsp.nvim_lua_ls()
+            require('lspconfig').lua_ls.setup(lua_opts)
+          end,
         }
       })
 
-      lsp.configure('rust_analyzer', {
-        cmd = { 'rust-analyzer' },
-      })
+      -- lsp.configure('rust_analyzer', {
+      --   cmd = { 'rust-analyzer' },
+      --   settings = {
+      --     ['rust-analyzer'] = {
+      --       -- rust-analyzer.completion.fullFunctionSignatures.enable
+      --       completion = {
+      --         fullFunctionSignatures = {
+      --           enable = true,
+      --         },
+      --       },
+      --     },
+      --   },
+      -- })
 
       local cmp = require('cmp')
       local cmp_select = { behavior = cmp.SelectBehavior.Select }
-      local cmp_mappings = lsp.defaults.cmp_mappings({
-        ['<C-p>'] = cmp.mapping.select_prev_item(cmp_select),
-        ['<C-n>'] = cmp.mapping.select_next_item(cmp_select),
-        ['<CR>'] = cmp.mapping.confirm {
-          behavior = cmp.ConfirmBehavior.Replace,
-          select = true,
+      cmp.setup({
+        sources = {
+          { name = 'path' },
+          { name = 'nvim_lsp' },
+          { name = 'nvim_lua' },
+          { name = 'luasnip', keyword_length = 2 },
+          { name = 'buffer',  keyword_length = 3 },
         },
-        ["<C-Space>"] = cmp.mapping.complete(),
+        -- formatting = lsp.cmp_format(),
+        mapping = cmp.mapping.preset.insert({
+          ['<C-p>'] = cmp.mapping.select_prev_item(cmp_select),
+          ['<C-n>'] = cmp.mapping.select_next_item(cmp_select),
+          ['<CR>'] = cmp.mapping.confirm({
+            select = true,
+          }),
+          ["<C-Space>"] = cmp.mapping.complete(),
+          ['<Tab>'] = nil,
+          ['<S-Tab>'] = nil,
+        }),
       })
 
-      cmp_mappings['<Tab>'] = nil
-      cmp_mappings['<S-Tab>'] = nil
-
-      lsp.setup_nvim_cmp({
-        mapping = cmp_mappings
-      })
-
-      lsp.set_preferences({
-        suggest_lsp_servers = false,
-        sign_icons = {
-          error = 'E',
-          warn = 'W',
-          hint = 'H',
-          info = 'I'
-        }
-      })
+      -- lsp.set_preferences({
+      --   suggest_lsp_servers = false,
+      --   sign_icons = {
+      --     error = 'E',
+      --     warn = 'W',
+      --     hint = 'H',
+      --     info = 'I'
+      --   }
+      -- })
 
       lsp.format_on_save({
         servers = {

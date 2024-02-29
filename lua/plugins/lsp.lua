@@ -50,7 +50,7 @@ return {
           'jqls',
           'astro',
           'tailwindcss',
-          'rust_analyzer',
+          -- 'rust_analyzer',
         },
         handlers = {
           lsp.default_setup,
@@ -61,19 +61,9 @@ return {
         }
       })
 
-      -- lsp.configure('rust_analyzer', {
-      --   cmd = { 'rust-analyzer' },
-      --   settings = {
-      --     ['rust-analyzer'] = {
-      --       -- rust-analyzer.completion.fullFunctionSignatures.enable
-      --       completion = {
-      --         fullFunctionSignatures = {
-      --           enable = true,
-      --         },
-      --       },
-      --     },
-      --   },
-      -- })
+      lsp.configure('rust_analyzer', {
+        cmd = { 'rust-analyzer' },
+      })
 
       local cmp = require('cmp')
       local cmp_select = { behavior = cmp.SelectBehavior.Select }

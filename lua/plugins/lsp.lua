@@ -7,7 +7,7 @@ return {
     branch = 'v3.x',
     dependencies = {
       -- LSP Support
-      { 'neovim/nvim-lspconfig' }, -- Required
+      { 'neovim/nvim-lspconfig',            branch = "master" }, -- Required
       -- Necessary due to config
       'nvim-telescope/telescope.nvim',
       {
@@ -30,15 +30,13 @@ return {
       { 'hrsh7th/cmp-path' },
       -- Useful status updates for LSP
       -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
-      { 'j-hui/fidget.nvim',                tag = 'legacy', opts = {} },
+      { 'j-hui/fidget.nvim',                tag = 'legacy',   opts = {} },
       -- Additional lua configuration, makes nvim stuff amazing!
       { 'folke/neodev.nvim',                opts = {} },
       'github/copilot.vim',
     },
     config = function()
       local lsp = require("lsp-zero")
-
-      lsp.preset("recommended")
 
       require('mason').setup({})
       require('mason-lspconfig').setup({

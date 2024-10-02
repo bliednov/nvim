@@ -101,7 +101,7 @@ return {
           ['lua_ls'] = { 'lua' },
           ['rust_analyzer'] = { 'rust' },
           ['pylsp'] = { 'python' },
-          ['tsserver'] = { 'typescript', 'javascript' },
+          ['tsserver'] = { 'typescript', 'javascript', 'typescriptreact', 'javascriptreact' },
         }
       })
 

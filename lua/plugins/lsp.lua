@@ -48,6 +48,7 @@ return {
           'jqls',
           'astro',
           'tailwindcss',
+          'eslint',
           -- 'rust_analyzer',
         },
         handlers = {

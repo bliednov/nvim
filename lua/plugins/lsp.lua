@@ -44,7 +44,7 @@ return {
           'lua_ls',
           'pylsp',
           'html',
-          'tsserver',
+          'ts_ls',
           'jqls',
           'astro',
           'tailwindcss',
@@ -102,7 +102,7 @@ return {
           ['lua_ls'] = { 'lua' },
           ['rust_analyzer'] = { 'rust' },
           ['pylsp'] = { 'python' },
-          ['tsserver'] = { 'typescript', 'javascript', 'typescriptreact', 'javascriptreact' },
+          ['ts_ls'] = { 'typescript', 'javascript', 'typescriptreact', 'javascriptreact' },
         }
       })
 

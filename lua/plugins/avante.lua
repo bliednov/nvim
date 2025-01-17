@@ -5,6 +5,12 @@ return {
   version = false, -- set this if you want to always pull the latest change
   opts = {
     -- add any opts here
+    mappings = {
+      sidebar = {
+        -- impossible mapping to disable it
+        switch_windows = "<F24><C-F24>",
+      },
+    },
   },
   -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
   build = "make",

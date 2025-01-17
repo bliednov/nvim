@@ -8,9 +8,18 @@ return {
     mappings = {
       sidebar = {
         -- impossible mapping to disable it
-        switch_windows = "<F24><C-F24>",
+        switch_windows = "<S-Tab>",
+        reverse_switch_windows = "<F24><C-F24>",
       },
     },
+    windows = {
+      edit = {
+        start_insert = false,
+      },
+      ask = {
+        start_insert = false,
+      },
+    }
   },
   -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
   build = "make",

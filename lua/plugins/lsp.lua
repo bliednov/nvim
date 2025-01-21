@@ -51,6 +51,7 @@ return {
           'eslint',
           -- 'rust_analyzer',
         },
+        automatic_installation = false,
         handlers = {
           lsp.default_setup,
           lua_ls = function()

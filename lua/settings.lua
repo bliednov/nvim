@@ -32,7 +32,7 @@ vim.o.clipboard = 'unnamedplus'
 vim.o.breakindent = true
 
 -- Save undo history
-vim.o.undodir = os.getenv("HOME") .. "/.vim/undodir"
+vim.o.undodir = os.getenv 'HOME' .. '/.vim/undodir'
 vim.o.undofile = true
 
 -- Case insensitive searching UNLESS /C or capital in search
@@ -74,7 +74,7 @@ vim.o.termguicolors = true
 -- vim.o.colorcolumn = "80"
 
 -- Cursor is always the same
-vim.o.guicursor = ""
+vim.o.guicursor = ''
 
 vim.o.swapfile = false
 vim.o.backup = false

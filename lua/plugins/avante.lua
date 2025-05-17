@@ -2,9 +2,10 @@ return {
   'yetone/avante.nvim',
   event = 'VeryLazy',
   lazy = false,
-  version = false, -- set this if you want to always pull the latest change
+  version = false,
   opts = {
     -- add any opts here
+    provider = 'openai',
     mappings = {
       sidebar = {
         -- impossible mapping to disable it
@@ -20,8 +21,16 @@ return {
         start_insert = false,
       },
     },
+    openai = {
+      disable_tools = true,
+      model = 'gpt-4o-mini',
+    },
     claude = {
       disable_tools = true,
+    },
+    gemini = {
+      disable_tools = true,
+      model = 'gemini-2.5-pro-preview-05-06',
     },
   },
   -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`

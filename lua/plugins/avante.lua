@@ -6,6 +6,7 @@ return {
   opts = {
     -- add any opts here
     provider = 'claude',
+    mode = 'legacy',
     mappings = {
       sidebar = {
         -- impossible mapping to disable it
@@ -27,7 +28,7 @@ return {
         model = 'gpt-4o-mini',
       },
       claude = {
-        -- disable_tools = true,
+        disable_tools = true,
       },
       gemini = {
         disable_tools = true,

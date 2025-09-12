@@ -25,7 +25,10 @@ return {
     providers = {
       openai = {
         disable_tools = true,
-        model = 'gpt-4o-mini',
+        model = 'gpt-5',
+        extra_request_body = {
+          temperature = 1,
+        },
       },
       claude = {
         disable_tools = true,

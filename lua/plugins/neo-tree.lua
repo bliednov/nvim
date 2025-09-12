@@ -10,6 +10,7 @@ return {
     config = function()
       require('neo-tree').setup()
       vim.keymap.set('n', '<C-n>', ':Neotree toggle<CR>')
+      vim.keymap.set('n', '<leader>ne', ':Neotree filesystem reveal position=left toggle<CR>', { desc = 'Toggle Neo-tree (reveal current file)' })
     end,
   },
 }

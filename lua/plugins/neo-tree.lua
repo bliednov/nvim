@@ -9,8 +9,7 @@ return {
     },
     config = function()
       require('neo-tree').setup()
-      vim.keymap.set('n', '<C-n>', ':NeoTreeShowToggle<CR>')
-      vim.keymap.set('n', '<leader>ne', ':NeoTreeRevealToggle<CR>', { desc = 'Toggle Neo-tree (reveal current file)' })
+      vim.keymap.set('n', '<C-n>', ':NeoTreeRevealToggle<CR>', { desc = 'Toggle Neo-tree (reveal current file)' })
     end,
   },
 }

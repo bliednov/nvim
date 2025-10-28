@@ -37,6 +37,7 @@ return {
         map(']d', vim.diagnostic.goto_next, 'Go to next diagnostic message')
         map('<leader>e', vim.diagnostic.open_float, 'Open floating diagnostic message')
         map('<leader>q', vim.diagnostic.setloclist, 'Open diagnostics list')
+
         local function client_supports_method(client, method, bufnr)
           if vim.fn.has 'nvim-0.11' == 1 then
             return client:supports_method(method, bufnr)
@@ -53,13 +54,11 @@ return {
             group = highlight_augroup,
             callback = vim.lsp.buf.document_highlight,
           })
-
           vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI' }, {
             buffer = event.buf,
             group = highlight_augroup,
             callback = vim.lsp.buf.clear_references,
           })
-
           vim.api.nvim_create_autocmd('LspDetach', {
             group = vim.api.nvim_create_augroup('bliednov-lsp-detach', { clear = true }),
             callback = function(event2)
@@ -118,9 +117,22 @@ return {
       lua_ls = {
         settings = {
           Lua = {
-            completion = {
-              callSnippet = 'Replace',
+            completion = { callSnippet = 'Replace' },
+          },
+        },
+      },
+
+      gopls = {
+        settings = {
+          gopls = {
+            analyses = {
+              unusedparams = true,
+              nilness = true,
+              shadow = true,
+              unusedwrite = true,
             },
+            staticcheck = true,
+            gofumpt = true,
           },
         },
       },
@@ -131,7 +143,12 @@ return {
       'stylua',
       'prettierd',
       'prettier',
+
+      'gopls',
+      'goimports',
+      'golines',
     })
+
     require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
     require('mason-lspconfig').setup {

@@ -34,6 +34,7 @@ return {
       lua = { 'stylua' },
       python = { 'autopep8' },
       rust = { 'rustfmt' },
+      go = { 'gopls', 'goimports', 'golines' },
       javascript = { 'prettierd', 'prettier', stop_after_first = true },
       javascriptreact = { 'prettierd', 'prettier', stop_after_first = true },
       typescript = { 'prettierd', 'prettier', stop_after_first = true },

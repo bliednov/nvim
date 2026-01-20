@@ -1,3 +1,15 @@
+local function has_biome_config(bufnr)
+  local root = vim.fs.root(bufnr, { 'biome.json', 'biome.jsonc' })
+  return root ~= nil
+end
+
+local function js_formatters(bufnr)
+  if has_biome_config(bufnr) then
+    return { 'biome' }
+  end
+  return { 'prettierd', 'prettier', stop_after_first = true }
+end
+
 return {
   'stevearc/conform.nvim',
   event = { 'BufWritePre' },
@@ -35,14 +47,26 @@ return {
       python = { 'autopep8' },
       rust = { 'rustfmt' },
       go = { 'gopls', 'goimports', 'golines' },
-      javascript = { 'prettierd', 'prettier', stop_after_first = true },
-      javascriptreact = { 'prettierd', 'prettier', stop_after_first = true },
-      typescript = { 'prettierd', 'prettier', stop_after_first = true },
-      typescriptreact = { 'prettierd', 'prettier', stop_after_first = true },
-      json = { 'prettierd', 'prettier', stop_after_first = true },
+      javascript = js_formatters,
+      javascriptreact = js_formatters,
+      typescript = js_formatters,
+      typescriptreact = js_formatters,
+      json = js_formatters,
+      jsonc = js_formatters,
       yaml = { 'prettierd', 'prettier', stop_after_first = true },
       html = { 'prettierd', 'prettier', stop_after_first = true },
       css = { 'prettierd', 'prettier', stop_after_first = true },
+    },
+    formatters = {
+      biome = {
+        require_cwd = true,
+      },
+      prettier = {
+        require_cwd = true,
+      },
+      prettierd = {
+        require_cwd = true,
+      },
     },
   },
 }

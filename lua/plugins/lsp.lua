@@ -106,6 +106,7 @@ return {
     local capabilities = vim.lsp.protocol.make_client_capabilities()
     capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
 
+    -- Servers configured via vim.lsp.config (no on_new_config needed)
     local servers = {
       html = {},
       pylsp = {},
@@ -113,7 +114,6 @@ return {
       astro = {},
       tailwindcss = {},
       eslint = {},
-      ts_ls = {},
       lua_ls = {
         settings = {
           Lua = {
@@ -144,6 +144,10 @@ return {
       'prettierd',
       'prettier',
 
+      -- LSPs configured via lspconfig.setup() (need on_new_config)
+      'biome', -- Global fallback when not in node_modules
+      'ts_ls', -- TypeScript LSP
+
       'gopls',
       'goimports',
       'golines',
@@ -155,13 +159,40 @@ return {
       ensure_installed = {},
       automatic_installation = false,
       automatic_enable = true,
-      handlers = {
-        function(server_name)
-          local server = servers[server_name] or {}
-          server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
-          require('lspconfig')[server_name].setup(server)
-        end,
-      },
     }
+
+    -- Configure servers using vim.lsp.config (Neovim 0.11+ API)
+    for server_name, server_opts in pairs(servers) do
+      local config = vim.tbl_deep_extend('force', {}, { capabilities = capabilities }, server_opts)
+      vim.lsp.config(server_name, config)
+    end
+
+    -- Servers with local binary detection (use before_init since on_new_config not supported)
+    vim.lsp.config('biome', {
+      capabilities = capabilities,
+      before_init = function(params, config)
+        local root = params.rootPath or vim.fn.getcwd()
+        local local_biome = root .. '/node_modules/.bin/biome'
+        if vim.fn.executable(local_biome) == 1 then
+          config.cmd = { local_biome, 'lsp-proxy' }
+        end
+      end,
+    })
+
+    vim.lsp.config('ts_ls', {
+      capabilities = capabilities,
+      before_init = function(params, config)
+        local root = params.rootPath or vim.fn.getcwd()
+        config.init_options = config.init_options or {}
+        config.init_options.plugins = config.init_options.plugins or {}
+        local local_ts = root .. '/node_modules/typescript/lib/tsserver.js'
+        if vim.fn.filereadable(local_ts) == 1 then
+          config.init_options.tsserver = { path = local_ts }
+          vim.notify('ts_ls: using local TypeScript at ' .. local_ts, vim.log.levels.INFO)
+        else
+          vim.notify('ts_ls: local TypeScript not found, using global', vim.log.levels.WARN)
+        end
+      end,
+    })
   end,
 }

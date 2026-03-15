@@ -182,16 +182,34 @@ return {
     vim.lsp.config('ts_ls', {
       capabilities = capabilities,
       before_init = function(params, config)
-        local root = params.rootPath or vim.fn.getcwd()
         config.init_options = config.init_options or {}
         config.init_options.plugins = config.init_options.plugins or {}
-        local local_ts = root .. '/node_modules/typescript/lib/tsserver.js'
+
+        local root = params.rootPath or vim.fn.getcwd()
+        local ts_path = '/node_modules/typescript/lib/tsserver.js'
+
+        -- Direct check (single-package repos)
+        local local_ts = root .. ts_path
         if vim.fn.filereadable(local_ts) == 1 then
           config.init_options.tsserver = { path = local_ts }
-          vim.notify('ts_ls: using local TypeScript at ' .. local_ts, vim.log.levels.INFO)
-        else
-          vim.notify('ts_ls: local TypeScript not found, using global', vim.log.levels.WARN)
+          local display = vim.uv.fs_realpath(local_ts) or local_ts
+          vim.notify('ts_ls: using local TypeScript at ' .. display, vim.log.levels.INFO)
+          return
         end
+
+        -- Monorepo: check workspace packages (apps/*, packages/*)
+        local patterns = { root .. '/*' .. ts_path, root .. '/*/*' .. ts_path }
+        for _, pattern in ipairs(patterns) do
+          local matches = vim.fn.glob(pattern, true, true)
+          if #matches > 0 then
+            config.init_options.tsserver = { path = matches[1] }
+            local display = vim.uv.fs_realpath(matches[1]) or matches[1]
+            vim.notify('ts_ls: using local TypeScript at ' .. display, vim.log.levels.INFO)
+            return
+          end
+        end
+
+        vim.notify('ts_ls: local TypeScript not found, using global', vim.log.levels.WARN)
       end,
     })
   end,
